@@ -1,4 +1,12 @@
 // we only want to return netIncome and total revenue
+
+// Function to convert date string to quarter format
+const formatDateToQuarter = (dateStr) => {
+  const [year, month] = dateStr.split("-");
+  const quarter = Math.floor((parseInt(month) - 1) / 3) + 1;
+  return `${year} Q${quarter}`;
+};
+
 const fetchQuarterlyGraphData = async (functionType) => {
   let apiEndpoint;
   if (functionType === "INCOME_STATEMENT") {
@@ -21,20 +29,24 @@ const fetchQuarterlyGraphData = async (functionType) => {
     const fiscalDateEnding = quarterlyReports.map(
       ({ fiscalDateEnding }) => fiscalDateEnding
     );
+    // Convert dates to quarter format
+    const quarters = fiscalDateEnding.map(formatDateToQuarter);
+
     let result;
     if (functionType === "INCOME_STATEMENT") {
       const netIncome = quarterlyReports.map(({ netIncome }) =>
         parseInt(netIncome)
       );
+
       const revenue = quarterlyReports.map(({ totalRevenue }) =>
         parseInt(totalRevenue)
       );
-      result = { fiscalDateEnding, netIncome, revenue };
+      result = { quarters, netIncome, revenue };
     } else if (functionType === "BALANCE_SHEET") {
       const totalShareholderEquity = quarterlyReports.map(
         ({ totalShareholderEquity }) => parseInt(totalShareholderEquity)
       );
-      result = { fiscalDateEnding, totalShareholderEquity };
+      result = { quarters, totalShareholderEquity };
     }
     console.log(result);
     return result;
@@ -45,4 +57,5 @@ const fetchQuarterlyGraphData = async (functionType) => {
   }
 };
 
+fetchQuarterlyGraphData("INCOME_STATEMENT");
 export default fetchQuarterlyGraphData;
