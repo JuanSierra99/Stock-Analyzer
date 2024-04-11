@@ -27,6 +27,25 @@ ChartJS.register(
   Legend
 );
 
+const options = {
+  scales: {
+    y: {
+      ticks: {
+        callback: (value, index, ticks) => {
+          if (value >= 1e9 || value <= -1e9) {
+            return "$" + value / 1e9 + "B";
+          } else if (value >= 1e6 || value <= -1e6) {
+            return "$" + value / 1e6 + "M";
+          } else if (value >= 1e3 || value <= -1e3) {
+            return "$" + value / 1e3 + "K";
+          }
+          return "$" + value;
+        },
+      },
+    },
+  },
+};
+
 const QuarterlyIncomeGraph = ({ type, value }) => {
   const [netIncomeHistory, setNetIncomeHistory] = useState([]);
   const [fiscalDateHistory, setFiscalDateHistory] = useState([]);
@@ -40,13 +59,14 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { fiscalDateEnding, netIncome, revenue } =
-          await fetchQuarterlyGraphData("INCOME_STATEMENT");
+        const { quarters, netIncome, revenue } = await fetchQuarterlyGraphData(
+          "INCOME_STATEMENT"
+        );
         const { totalShareholderEquity } = await fetchQuarterlyGraphData(
           "BALANCE_SHEET"
         );
         setNetIncomeHistory(netIncome);
-        setFiscalDateHistory(fiscalDateEnding);
+        setFiscalDateHistory(quarters);
         setRevenueHistory(revenue);
         setTotalShareholderEquityHistory(totalShareholderEquity);
       } catch (err) {
@@ -71,6 +91,7 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
       </button>
       {displayAsBarGraph ? (
         <Bar
+          options={options}
           datasetIdKey="id"
           data={{
             labels: fiscalDateHistory,
@@ -95,7 +116,7 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
         />
       ) : (
         <Line
-          datasetIdKey="id"
+          options={options}
           data={{
             labels: fiscalDateHistory,
             datasets: [
