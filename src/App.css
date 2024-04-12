@@ -1,11 +1,35 @@
 #root {
-  background-color: rgb(255, 255, 255);
-  position: relative;
+  --perfect-black: #252422;
+  --perfect-orange: #eb5e28;
+  --sidebar-width: 200px;
+  --mini-sidebar-width: 75px;
+  display: relative;
+  min-height: 100svh;
+  width: 100%;
 }
 
-.graph-container {
-  width: 100%;
-  height: auto;
-  border: solid 1px black;
-  border-radius: 0px;
+.sidebar-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  z-index: 9999;
+}
+
+.main-page-section {
+  position: relative;
+  width: calc(100% - var(--sidebar-width));
+  left: var(--sidebar-width);
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.hide-sidebar-section {
+  width: var(--mini-sidebar-width);
+}
+
+.extended-main-page-section {
+  width: calc(100% - var(--mini-sidebar-width));
+  left: var(--mini-sidebar-width);
 }
