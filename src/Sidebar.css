@@ -1,0 +1,95 @@
+.sidebar-container {
+  color: white;
+  background-color: var(--perfect-orange);
+  border-radius: 0 30px 30px 0;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 9999;
+}
+
+.sidebar-header {
+  width: 100%;
+  position: relative;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.sidebar-button {
+  color: inherit;
+  position: absolute;
+  right: 0;
+  width: 15px;
+  transform: rotate(180deg);
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sidebar-upper-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+}
+
+.sidebar-upper-section > a {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 25px 0 25px 20px;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar-upper-section > a:hover {
+  background-color: var(--perfect-black);
+  border-radius: 0 10px 10px 0;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  width: 100%;
+  margin: 10px;
+  gap: 10px;
+  padding-left: 50px;
+}
+
+.sidebar-bottom > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.simplified-sidebar-upper-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.simplified-sidebar-upper-section > a {
+  padding-top: 10px;
+  text-align: center;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.simplified-sidebar-upper-section > a:hover {
+  background-color: var(--perfect-black);
+  border-radius: 0 10px 10px 0;
+}
