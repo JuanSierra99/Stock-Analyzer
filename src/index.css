@@ -3,4 +3,22 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  font-family: Rubik-Bold, Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: Rubik;
+  src: url(/public/Fonts/Rubik-Regular.ttf);
+}
+
+@font-face {
+  font-family: Rubik-Bold;
+  src: url(/public/Fonts/Rubik-Bold.ttf);
 }
