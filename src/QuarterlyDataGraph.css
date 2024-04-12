@@ -1,0 +1,10 @@
+.toggle-graph-type-button {
+  background: var(--perfect-black);
+  color: white;
+  border: none;
+  position: relative;
+  font-family: Rubik-Bold;
+  font-size: 1rem;
+  border-radius: 5px;
+  right: 0px;
+}
