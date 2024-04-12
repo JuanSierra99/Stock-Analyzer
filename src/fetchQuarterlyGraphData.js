@@ -1,5 +1,3 @@
-// we only want to return netIncome and total revenue
-
 // Function to convert date string to quarter format
 const formatDateToQuarter = (dateStr) => {
   const [year, month] = dateStr.split("-");
@@ -30,22 +28,22 @@ const fetchQuarterlyGraphData = async (functionType) => {
       ({ fiscalDateEnding }) => fiscalDateEnding
     );
     // Convert dates to quarter format
-    const quarters = fiscalDateEnding.map(formatDateToQuarter);
+    const quarters = fiscalDateEnding.map(formatDateToQuarter).reverse();
 
     let result;
     if (functionType === "INCOME_STATEMENT") {
-      const netIncome = quarterlyReports.map(({ netIncome }) =>
-        parseInt(netIncome)
-      );
+      const netIncome = quarterlyReports
+        .map(({ netIncome }) => parseInt(netIncome))
+        .reverse();
 
-      const revenue = quarterlyReports.map(({ totalRevenue }) =>
-        parseInt(totalRevenue)
-      );
+      const revenue = quarterlyReports
+        .map(({ totalRevenue }) => parseInt(totalRevenue))
+        .reverse();
       result = { quarters, netIncome, revenue };
     } else if (functionType === "BALANCE_SHEET") {
-      const totalShareholderEquity = quarterlyReports.map(
-        ({ totalShareholderEquity }) => parseInt(totalShareholderEquity)
-      );
+      const totalShareholderEquity = quarterlyReports
+        .map(({ totalShareholderEquity }) => parseInt(totalShareholderEquity))
+        .reverse();
       result = { quarters, totalShareholderEquity };
     }
     console.log(result);
@@ -57,5 +55,4 @@ const fetchQuarterlyGraphData = async (functionType) => {
   }
 };
 
-fetchQuarterlyGraphData("INCOME_STATEMENT");
 export default fetchQuarterlyGraphData;
