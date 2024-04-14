@@ -5,7 +5,9 @@ const formatDateToQuarter = (dateStr) => {
   return `${year} Q${quarter}`;
 };
 
+// Function: Fetches and parses data from AlphaVantage api
 const fetchQuarterlyGraphData = async (functionType, ticker, apiKey) => {
+  //Invalid Argument Error Handling
   if (!apiKey) {
     throw new Error("API key not properly loaded");
   }
@@ -22,33 +24,35 @@ const fetchQuarterlyGraphData = async (functionType, ticker, apiKey) => {
   }
 
   try {
-    const response = await fetch(apiEndpoint);
+    const response = await fetch(apiEndpoint); // Fetch data from Alpha Vanatage API
     if (!response.ok) {
       return console.error("Error fetching data from api.");
     }
-    const data = await response.json();
+    const data = await response.json(); // Extract json
     if (data.Information && data.Information.includes("API rate limit")) {
       throw new Error("API rate limit exceeded");
     }
-    console.log(data);
-    const quarterlyReports = data["quarterlyReports"];
+    const quarterlyReports = data["quarterlyReports"]; // We only need the quarterly reports object
+    // obtain the fiscalDates of every quarter
     const fiscalDateEnding = quarterlyReports.map(
       ({ fiscalDateEnding }) => fiscalDateEnding
     );
-    // Convert dates to quarter format
+    // Convert dates to quarter format, and reverse it so its from oldest to newest
     const quarters = fiscalDateEnding.map(formatDateToQuarter).reverse();
 
     let result;
     if (functionType === "INCOME_STATEMENT") {
+      // obtain the net income of every quarter and reverse it so its from oldest to newest
       const netIncome = quarterlyReports
         .map(({ netIncome }) => parseInt(netIncome))
         .reverse();
-
+      // obtain the revenue of every quarter and reverse it so its from oldest to newest
       const revenue = quarterlyReports
         .map(({ totalRevenue }) => parseInt(totalRevenue))
         .reverse();
-      result = { quarters, netIncome, revenue };
+      result = { quarters, netIncome, revenue }; // store all data in an object, to be returned
     } else if (functionType === "BALANCE_SHEET") {
+      // obtain the shareholderEquity of every quarter, and reverse it so its from oldest to newest
       const totalShareholderEquity = quarterlyReports
         .map(({ totalShareholderEquity }) => parseInt(totalShareholderEquity))
         .reverse();
