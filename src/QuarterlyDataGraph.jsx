@@ -30,20 +30,23 @@ ChartJS.register(
 );
 
 const QuarterlyDataGraph = ({ searchTickerValue }) => {
+  // Store data fetched from the api, to be used by chartjs graph
   const [netIncomeHistory, setNetIncomeHistory] = useState([]);
   const [fiscalDateHistory, setFiscalDateHistory] = useState([]);
   const [revenueHistory, setRevenueHistory] = useState([]);
   const [totalShareholderEquityHistory, setTotalShareholderEquityHistory] =
     useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(true);
+  const [loading, setLoading] = useState(true); // true when data is loading
+  const [error, setError] = useState(false); // true when we fail to recieve data from api
+  const [errorMessage, setErrorMessage] = useState(""); // Display error message thrown when requesting for data from api
+  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(true); // Displays the chart as a bar graph when true
+  // Colors to be used by Bar and Line graph components
   const quarterlyNetIncomeColor = "#2a9d8f";
   const quarterlyRevenueColor = "#e9c46a";
   const quarterlyShareholderColor = "#e76f51";
   const apiKey = import.meta.env.VITE_API_KEY;
 
+  // Options for chartjs graphs. Allows us to style the graph to our liking.
   const options = {
     elements: {
       point: {
@@ -68,6 +71,7 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
     },
   };
 
+  // Fetches data from api on mount, and when user searches for new stock
   useEffect(() => {
     const getData = async () => {
       try {
