@@ -1,5 +1,6 @@
 .toggle-graph-type-button {
-  background: var(--perfect-black);
+  /* background: var(--perfect-black); */
+  background-color: transparent;
   color: white;
   border: none;
   position: relative;
