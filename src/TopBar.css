@@ -26,7 +26,7 @@
 
 .search-stocks {
   border-radius: 5px;
-  background-color: #d8d8e1;
+  background-color: transparent;
   padding: 5px;
   outline: none;
   border: none;
@@ -34,4 +34,23 @@
 
 .search-stocks::placeholder {
   color: #757577;
+}
+
+.search-stock-form {
+  background-color: #d8d8e1;
+  border-radius: 5px;
+  padding: 2px;
+  width: 85px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search-button {
+  border: none;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0 0 0 5px;
+  background-color: transparent;
 }
