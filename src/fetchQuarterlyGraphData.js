@@ -29,8 +29,13 @@ const fetchQuarterlyGraphData = async (functionType, ticker, apiKey) => {
       return console.error("Error fetching data from api.");
     }
     const data = await response.json(); // Extract json
+
     if (data.Information && data.Information.includes("API rate limit")) {
       throw new Error("API rate limit exceeded");
+    }
+    // Check if quarterlyReports exists and is not empty
+    if (!data.quarterlyReports || data.quarterlyReports.length === 0) {
+      throw new Error("No quarterly reports found for the provided ticker");
     }
     const quarterlyReports = data["quarterlyReports"]; // We only need the quarterly reports object
     // obtain the fiscalDates of every quarter
@@ -50,13 +55,13 @@ const fetchQuarterlyGraphData = async (functionType, ticker, apiKey) => {
       const revenue = quarterlyReports
         .map(({ totalRevenue }) => parseInt(totalRevenue))
         .reverse();
-      result = { quarters, netIncome, revenue }; // store all data in an object, to be returned
+      result = { quarters, netIncome, revenue, ticker }; // store all data in an object, to be returned
     } else if (functionType === "BALANCE_SHEET") {
       // obtain the shareholderEquity of every quarter, and reverse it so its from oldest to newest
       const totalShareholderEquity = quarterlyReports
         .map(({ totalShareholderEquity }) => parseInt(totalShareholderEquity))
         .reverse();
-      result = { quarters, totalShareholderEquity };
+      result = { quarters, totalShareholderEquity, ticker };
     }
     return result;
   } catch (error) {
