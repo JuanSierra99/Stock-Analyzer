@@ -1,4 +1,6 @@
 import "./Sidebar.css";
+
+// This component provides navigation links and a toggle button to control the sidebar visibility.
 export const Sidebar = ({ buttonFunction, simplifiedSidebar }) => {
   return (
     <div className={`sidebar-container`}>
