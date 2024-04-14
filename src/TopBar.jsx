@@ -2,9 +2,10 @@ import { useState } from "react";
 import "./TopBar.css";
 
 const Topbar = ({ searchTickerValue, setSearchTickerValue }) => {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState(""); // Store search bar values
+  // Call Function on search bar value when users clicks enter
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // prevent default form submission
     try {
       // Fetch stock data based on the entered symbol
       setSearchTickerValue(searchInput);
