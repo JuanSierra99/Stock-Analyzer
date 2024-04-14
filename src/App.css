@@ -33,3 +33,35 @@
   width: calc(100% - var(--mini-sidebar-width));
   left: var(--mini-sidebar-width);
 }
+
+.content-section {
+  margin-top: 50px;
+  display: flex;
+  background-color: rgb(223, 223, 223);
+  border-radius: 15px;
+  height: 500px;
+  padding: 10px;
+  gap: 10px;
+}
+
+.content-box-left,
+.content-box-right {
+  width: 50%;
+  border-radius: 15px;
+  height: 100%;
+}
+
+.content-box-header {
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: inherit;
+}
+
+.content-box-left {
+  background-color: var(--perfect-black);
+}
+
+.content-box-right {
+  background-color: var(--perfect-orange);
+}
