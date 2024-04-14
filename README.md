@@ -36,3 +36,17 @@ npm run dev
 Display historical financial data using Chart.js.
 Graphs based on INCOME_STATEMENT and BALANCE_SHEET endpoints from AlphaVantage API.
 Error handling for API rate limits and other errors.
+
+# Demo
+
+### IBM Stock Bar Graph
+
+![Bargraph](/public/Demo/Bargraph.webp)
+
+### Apple Stock Line Graph + Hidden Sidebar for extra space
+
+![Linegraph](/public/Demo/Linegraph.webp)
+
+### Responsive Stock Exchange Clock components
+
+![Analog Clocks](./public/Demo/AnalogClockComponent.webp)
