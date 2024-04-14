@@ -33,6 +33,7 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
   // Store data fetched from the api, to be used by chartjs graph
   const [netIncomeHistory, setNetIncomeHistory] = useState([]);
   const [fiscalDateHistory, setFiscalDateHistory] = useState([]);
+  const [returnedTicker, setReturnedTicker] = useState();
   const [revenueHistory, setRevenueHistory] = useState([]);
   const [totalShareholderEquityHistory, setTotalShareholderEquityHistory] =
     useState([]);
@@ -75,11 +76,12 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { quarters, netIncome, revenue } = await fetchQuarterlyGraphData(
-          "INCOME_STATEMENT",
-          searchTickerValue,
-          apiKey
-        );
+        const { quarters, netIncome, revenue, ticker } =
+          await fetchQuarterlyGraphData(
+            "INCOME_STATEMENT",
+            searchTickerValue,
+            apiKey
+          );
         const { totalShareholderEquity } = await fetchQuarterlyGraphData(
           "BALANCE_SHEET",
           searchTickerValue,
@@ -89,13 +91,15 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
         setFiscalDateHistory(quarters);
         setRevenueHistory(revenue);
         setTotalShareholderEquityHistory(totalShareholderEquity);
+        setReturnedTicker(ticker);
       } catch (err) {
         console.log("Error: ", err.message);
         console.warn(
-          "Alphavantage API request failed. Attempting to get demo data instead"
+          "Alphavantage API request failed. Will attempt to get demo data instead"
         );
+        // Why try fetching demo data again ? just keep the same data you stored the first time. it always fetches demo data first. Answer, because they may have their own api key, and we need to use demo key
         try {
-          const { quarters, netIncome, revenue } =
+          const { quarters, netIncome, revenue, ticker } =
             await fetchQuarterlyGraphData("INCOME_STATEMENT", "IBM", "demo");
           const { totalShareholderEquity } = await fetchQuarterlyGraphData(
             "BALANCE_SHEET",
@@ -106,6 +110,7 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
           setFiscalDateHistory(quarters);
           setRevenueHistory(revenue);
           setTotalShareholderEquityHistory(totalShareholderEquity);
+          setReturnedTicker(ticker);
         } catch (outerErr) {
           setError(true);
           setErrorMessage(
@@ -139,7 +144,8 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
             style={{ width: "20px" }}
           />
         </button>
-        <h2 style={{ display: "inline" }}>{searchTickerValue}</h2>
+
+        <h2 style={{ display: "inline" }}>{returnedTicker}</h2>
       </div>
       {displayAsBarGraph ? (
         <Bar
