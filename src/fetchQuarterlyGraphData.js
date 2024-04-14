@@ -5,14 +5,18 @@ const formatDateToQuarter = (dateStr) => {
   return `${year} Q${quarter}`;
 };
 
-const fetchQuarterlyGraphData = async (functionType) => {
+const fetchQuarterlyGraphData = async (functionType, ticker, apiKey) => {
+  if (!apiKey) {
+    throw new Error("API key not properly loaded");
+  }
+  if (!ticker) {
+    throw new Error("ticker not provided");
+  }
   let apiEndpoint;
   if (functionType === "INCOME_STATEMENT") {
-    apiEndpoint =
-      "https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=IBM&apikey=demo";
+    apiEndpoint = `https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol=${ticker}&apikey=${apiKey}`;
   } else if (functionType === "BALANCE_SHEET") {
-    apiEndpoint =
-      "https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=IBM&apikey=demo";
+    apiEndpoint = `https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol=${ticker}&apikey=${apiKey}`;
   } else {
     throw new Error("Invalid function type");
   }
@@ -23,6 +27,10 @@ const fetchQuarterlyGraphData = async (functionType) => {
       return console.error("Error fetching data from api.");
     }
     const data = await response.json();
+    if (data.Information && data.Information.includes("API rate limit")) {
+      throw new Error("API rate limit exceeded");
+    }
+    console.log(data);
     const quarterlyReports = data["quarterlyReports"];
     const fiscalDateEnding = quarterlyReports.map(
       ({ fiscalDateEnding }) => fiscalDateEnding
@@ -46,7 +54,6 @@ const fetchQuarterlyGraphData = async (functionType) => {
         .reverse();
       result = { quarters, totalShareholderEquity };
     }
-    console.log(result);
     return result;
   } catch (error) {
     throw new Error(
