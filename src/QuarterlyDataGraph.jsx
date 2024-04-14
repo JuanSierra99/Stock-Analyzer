@@ -13,6 +13,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
+import { GraphSlider } from "./GraphSlider.jsx";
 import "./QuarterlyDataGraph.css";
 
 // Chose to register, so that we have smaller bundle sizes
@@ -28,7 +29,7 @@ ChartJS.register(
   Legend
 );
 
-const QuarterlyIncomeGraph = ({ type, value }) => {
+const QuarterlyDataGraph = ({ searchTickerValue }) => {
   const [netIncomeHistory, setNetIncomeHistory] = useState([]);
   const [fiscalDateHistory, setFiscalDateHistory] = useState([]);
   const [revenueHistory, setRevenueHistory] = useState([]);
@@ -36,10 +37,13 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
     useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(true);
   const quarterlyNetIncomeColor = "#2a9d8f";
   const quarterlyRevenueColor = "#e9c46a";
   const quarterlyShareholderColor = "#e76f51";
+  const apiKey = import.meta.env.VITE_API_KEY;
+
   const options = {
     elements: {
       point: {
@@ -49,7 +53,7 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
     scales: {
       y: {
         ticks: {
-          callback: (value, index, ticks) => {
+          callback: (value) => {
             if (value >= 1e9 || value <= -1e9) {
               return "$" + value / 1e9 + "B";
             } else if (value >= 1e6 || value <= -1e6) {
@@ -68,36 +72,71 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
     const getData = async () => {
       try {
         const { quarters, netIncome, revenue } = await fetchQuarterlyGraphData(
-          "INCOME_STATEMENT"
+          "INCOME_STATEMENT",
+          searchTickerValue,
+          apiKey
         );
         const { totalShareholderEquity } = await fetchQuarterlyGraphData(
-          "BALANCE_SHEET"
+          "BALANCE_SHEET",
+          searchTickerValue,
+          apiKey
         );
         setNetIncomeHistory(netIncome);
         setFiscalDateHistory(quarters);
         setRevenueHistory(revenue);
         setTotalShareholderEquityHistory(totalShareholderEquity);
       } catch (err) {
-        setError(err.message);
+        console.log("Error: ", err.message);
+        console.warn(
+          "Alphavantage API request failed. Attempting to get demo data instead"
+        );
+        try {
+          const { quarters, netIncome, revenue } =
+            await fetchQuarterlyGraphData("INCOME_STATEMENT", "IBM", "demo");
+          const { totalShareholderEquity } = await fetchQuarterlyGraphData(
+            "BALANCE_SHEET",
+            "IBM",
+            "demo"
+          );
+          setNetIncomeHistory(netIncome);
+          setFiscalDateHistory(quarters);
+          setRevenueHistory(revenue);
+          setTotalShareholderEquityHistory(totalShareholderEquity);
+        } catch (outerErr) {
+          setError(true);
+          setErrorMessage(
+            "Error, failed to get any data from API: ",
+            outerErr.message
+          );
+        }
       } finally {
         setLoading(false);
       }
     };
     getData();
-  }, []);
+  }, [searchTickerValue]);
 
   if (loading) return <p>Loading Data...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) {
+    return <p>Error: {errorMessage}</p>;
+  }
+
   return (
     <div className="graph-container">
-      <button
-        className="toggle-graph-type-button"
-        onClick={() => {
-          setDisplayAsBarGraph(!displayAsBarGraph);
-        }}
-      >
-        {displayAsBarGraph ? "Bar Chart" : "Line Chart"}
-      </button>
+      <div className="graph-header">
+        <button
+          className="toggle-graph-type-button"
+          onClick={() => {
+            setDisplayAsBarGraph(!displayAsBarGraph);
+          }}
+        >
+          <img
+            src={displayAsBarGraph ? "/Svgs/Bars.svg" : "/Svgs/stocks-line.svg"}
+            style={{ width: "20px" }}
+          />
+        </button>
+        <h2 style={{ display: "inline" }}>{searchTickerValue}</h2>
+      </div>
       {displayAsBarGraph ? (
         <Bar
           options={options}
@@ -166,8 +205,9 @@ const QuarterlyIncomeGraph = ({ type, value }) => {
           }}
         />
       )}
+      <GraphSlider></GraphSlider>
     </div>
   );
 };
 
-export default QuarterlyIncomeGraph;
+export default QuarterlyDataGraph;
