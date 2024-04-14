@@ -24,9 +24,8 @@
 .sidebar-button {
   color: inherit;
   position: absolute;
-  right: 0;
-  width: 15px;
-  transform: rotate(180deg);
+  right: -1px;
+  width: 20px;
   background-color: transparent;
   margin: 0;
   padding: 0;
