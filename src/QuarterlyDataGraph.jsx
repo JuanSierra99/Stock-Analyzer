@@ -39,7 +39,7 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
   const [loading, setLoading] = useState(true); // true when data is loading
   const [error, setError] = useState(false); // true when we fail to recieve data from api
   const [errorMessage, setErrorMessage] = useState(""); // Display error message thrown when requesting for data from api
-  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(true); // Displays the chart as a bar graph when true
+  const [displayAsBarGraph, setDisplayAsBarGraph] = useState(false); // Displays the chart as a bar graph when true
   // Colors to be used by Bar and Line graph components
   const quarterlyNetIncomeColor = "#2a9d8f";
   const quarterlyRevenueColor = "#e9c46a";
