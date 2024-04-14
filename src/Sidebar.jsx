@@ -12,7 +12,7 @@ export const Sidebar = ({ buttonFunction, simplifiedSidebar }) => {
         }`}
       >
         <h4 className="sidebar-header">
-          {simplifiedSidebar ? "VG" : "Value Glance"}
+          {simplifiedSidebar ? "SC" : "Stock Charts"}
           <button className="sidebar-button" onClick={buttonFunction}>
             <img src="/Svgs/sidebar-toggle.svg" alt="sidebar-toggle" />
           </button>
