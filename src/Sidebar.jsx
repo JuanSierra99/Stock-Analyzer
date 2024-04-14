@@ -18,7 +18,7 @@ export const Sidebar = ({ buttonFunction, simplifiedSidebar }) => {
         <a href="#">
           <img
             src="/Svgs/dashboard.svg"
-            style={{ height: "1rem" }}
+            style={{ height: "1.5rem" }}
             alt="dashboard"
           />{" "}
           {!simplifiedSidebar && "Dashboard"}
@@ -26,17 +26,25 @@ export const Sidebar = ({ buttonFunction, simplifiedSidebar }) => {
         <a href="#">
           <img
             src="/Svgs/watchlist.svg"
-            style={{ height: "1rem" }}
+            style={{ height: "1.5rem" }}
             alt="watchlist"
           ></img>
           {!simplifiedSidebar && "Watchlist"}
         </a>
         <a href="#">
-          <img src="/Svgs/stock.svg" style={{ height: "1rem" }} alt="stocks" />
+          <img
+            src="/Svgs/stock.svg"
+            style={{ height: "1.5rem" }}
+            alt="stocks"
+          />
           {!simplifiedSidebar && "Stocks"}
         </a>
         <a href="#">
-          <img src="/Svgs/filter.svg" style={{ height: "1rem" }} alt="filter" />{" "}
+          <img
+            src="/Svgs/filter.svg"
+            style={{ height: "1.5rem" }}
+            alt="filter"
+          />{" "}
           {!simplifiedSidebar && "Filter"}
         </a>
       </nav>
