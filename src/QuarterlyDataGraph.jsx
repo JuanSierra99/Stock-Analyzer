@@ -72,9 +72,37 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
     },
   };
 
+  useEffect(() => {
+    const getDemoData = async () => {
+      console.log("Fetching Demo Data");
+      try {
+        const { quarters, netIncome, revenue, ticker } =
+          await fetchQuarterlyGraphData("INCOME_STATEMENT", "IBM", "demo");
+        const { totalShareholderEquity } = await fetchQuarterlyGraphData(
+          "BALANCE_SHEET",
+          "IBM",
+          "demo"
+        );
+        setNetIncomeHistory(netIncome);
+        setFiscalDateHistory(quarters);
+        setRevenueHistory(revenue);
+        setTotalShareholderEquityHistory(totalShareholderEquity);
+        setReturnedTicker(ticker);
+      } catch (outerErr) {
+        setError(true);
+        setErrorMessage(
+          "Error, failed to get any data from API: ",
+          outerErr.message
+        );
+      }
+    };
+    getDemoData();
+  }, []);
+
   // Fetches data from api on mount, and when user searches for new stock
   useEffect(() => {
     const getData = async () => {
+      console.log("Fetching Non Demo Data");
       try {
         const { quarters, netIncome, revenue, ticker } =
           await fetchQuarterlyGraphData(
@@ -93,31 +121,8 @@ const QuarterlyDataGraph = ({ searchTickerValue }) => {
         setTotalShareholderEquityHistory(totalShareholderEquity);
         setReturnedTicker(ticker);
       } catch (err) {
+        console.error("Failed to get requested data");
         console.log("Error: ", err.message);
-        console.warn(
-          "Alphavantage API request failed. Will attempt to get demo data instead"
-        );
-        // Why try fetching demo data again ? just keep the same data you stored the first time. it always fetches demo data first. Answer, because they may have their own api key, and we need to use demo key
-        try {
-          const { quarters, netIncome, revenue, ticker } =
-            await fetchQuarterlyGraphData("INCOME_STATEMENT", "IBM", "demo");
-          const { totalShareholderEquity } = await fetchQuarterlyGraphData(
-            "BALANCE_SHEET",
-            "IBM",
-            "demo"
-          );
-          setNetIncomeHistory(netIncome);
-          setFiscalDateHistory(quarters);
-          setRevenueHistory(revenue);
-          setTotalShareholderEquityHistory(totalShareholderEquity);
-          setReturnedTicker(ticker);
-        } catch (outerErr) {
-          setError(true);
-          setErrorMessage(
-            "Error, failed to get any data from API: ",
-            outerErr.message
-          );
-        }
       } finally {
         setLoading(false);
       }

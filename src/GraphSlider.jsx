@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./GraphSlider.css";
+
 export const GraphSlider = () => {
   const [sliderValue, setSliderValue] = useState(0);
   return (
